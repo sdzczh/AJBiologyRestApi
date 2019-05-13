@@ -7,7 +7,7 @@ public enum ResultCode {
 
     /* 参数错误：10001-19999 */
     PARAM_IS_INVALID(10001, "参数无效"),
-    PARAM_IS_BLANK(10002, "参数为空"),
+    PARAM_IS_BLANK(10002, "请把参数填写完整"),
     PARAM_TYPE_BIND_ERROR(10003, "参数类型错误"),
 
     /* 用户错误：20001-29999*/
@@ -31,7 +31,7 @@ public enum ResultCode {
     SYSTEM_PARAM_ERROR(40002, "系统参数未配置"),
 
     /* 数据错误：50001-599999 */
-    RESULE_DATA_NONE(50001, "数据未找到"),
+    RESULE_DATA_NONE(50001, "没有找到相应数据"),
     DATA_ALREADY_EXISTED(50002, "数据已存在"),
     UPDATE_DATA_NOT_EXIST(50003, "数据无更新"),
 

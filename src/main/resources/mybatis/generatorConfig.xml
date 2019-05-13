@@ -40,7 +40,7 @@
         <plugin type="org.mybatis.generator.plugins.MybatisServicePlugin">
             <property name="targetPackage" value="com.zh.program.Service" />
             <property name="implementationPackage" value="com.zh.program.Service.impl" />
-            <property name="targetProject" value="H:\MyWork\WagasRestApi\src\main\java" />
+            <property name="targetProject" value="H:\MyWork\AJBiologyRestApi\src\main\java" />
             <property name="enableInsert" value="true" />
             <property name="enableInsertSelective" value="true" />
             <property name="enableUpdateByPrimaryKey" value="true" />
@@ -115,7 +115,7 @@
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
         -->
-        <table schema="" tableName="banner"  enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+        <table schema="" tableName="quality"  enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
     </context>
