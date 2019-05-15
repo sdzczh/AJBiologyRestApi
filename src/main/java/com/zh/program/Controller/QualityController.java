@@ -29,7 +29,7 @@ import java.util.Map;
 @RequestMapping(value = "quality")
 public class QualityController {
     @Autowired
-    private QualityService qualityService;
+    private QualityService qualityService; 
 
     /**
     *@Description: 获取质量列表内容
