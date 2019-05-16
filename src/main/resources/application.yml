@@ -16,6 +16,8 @@ spring:
     prefix: /WEB-INF/view/
   main:
     allow-bean-definition-overriding: true
+  messages:
+    basename: i18n.login
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
 server:

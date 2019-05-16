@@ -37,7 +37,7 @@ public class IndexController {
     @RequestMapping(value = "")
     public String index(Model model){
         JSONObject jsonObject = sysparamService.getIndexSysparam();
-        model.addAttribute("sysparam", jsonObject);
+        model.addAttribute("sysparams", jsonObject);
         List<Banner> bannerList = bannerService.findAll();
         model.addAttribute("banners", bannerList);
         List<News> newsList = newsService.getIndxList();

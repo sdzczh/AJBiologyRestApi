@@ -154,9 +154,9 @@
      order by id desc 
   </select>
   <select id="selectPaging" parameterType="java.util.Map" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from news
+    select
+    id, title, type, img_url, ne.describe, create_time, update_time, content
+    from news ne
     where 1=1 
     <if test="title != null">
        and  title = #{title,jdbcType=VARCHAR}
