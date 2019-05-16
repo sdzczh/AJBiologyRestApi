@@ -34,6 +34,11 @@ public class IndexController {
     @Autowired
     private NewsService newsService;
 
+    /**
+     * 首页
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "")
     public String index(Model model){
         JSONObject jsonObject = sysparamService.getIndexSysparam();

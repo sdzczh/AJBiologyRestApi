@@ -1,17 +1,22 @@
 package com.zh.program.Service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zh.program.Common.enums.RedisKey;
 import com.zh.program.Common.enums.SysparamsKey;
+import com.zh.program.Common.utils.RedisUtil;
+import com.zh.program.Common.utils.StrUtils;
 import com.zh.program.Dao.SysparamMapper;
 import com.zh.program.Entrty.Sysparam;
 import com.zh.program.Service.SysparamService;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,6 +28,8 @@ import org.springframework.stereotype.Service;
 public class SysparamServiceImpl implements SysparamService {
     @Resource
     private SysparamMapper sysparamMapper;
+    @Resource
+    private RedisTemplate<String, String> redis;
 
     private static final Logger logger = LoggerFactory.getLogger(SysparamServiceImpl.class);
 
@@ -72,34 +79,69 @@ public class SysparamServiceImpl implements SysparamService {
     }
 
     @Override
-    public Sysparam selectByKey(String key) {
-        Map<Object, Object> map = new HashMap<>();
-        map.put("keyName", key);
-        List<Sysparam> sysparamList = this.sysparamMapper.selectAll(map);
-        return sysparamList.size() == 0 ? null : sysparamList.get(0);
+    public Sysparam selectByKey(String key) throws Exception {
+        String redisKey = RedisKey.REDIS_INDEX + "key";
+        Sysparam sysparam = RedisUtil.searchStringObj(redis, redisKey, Sysparam.class);
+        if(sysparam == null) {
+            Map<Object, Object> map = new HashMap<>();
+            map.put("keyName", key);
+            List<Sysparam> sysparamList = this.sysparamMapper.selectAll(map);
+            if(sysparamList.size() == 0){
+                throw new Exception("系统参数错误");
+            }else{
+                sysparam = sysparamList.get(0);
+                RedisUtil.addStringObj(redis, redisKey, sysparam);
+            }
+        }
+        return sysparam;
     }
 
     @Override
     public JSONObject getIndexSysparam() {
-        String bannerTitle = selectByKey(SysparamsKey.INDEX_BANNER_TITLE).getKeyValue();
-        String bannerDescribe = selectByKey(SysparamsKey.INDEX_BANNER_DESCRIBE).getKeyValue();
-        String companyAbout = selectByKey(SysparamsKey.INDEX_COMPANY_ABOUT).getKeyValue();
-        String phone = selectByKey(SysparamsKey.COMPANY_PHONE).getKeyValue();
-        String email = selectByKey(SysparamsKey.COMPANY_EMAIL).getKeyValue();
-        String address = selectByKey(SysparamsKey.COMPANY_ADDRESS).getKeyValue();
-        String since = selectByKey(SysparamsKey.COMPANY_SINCE).getKeyValue();
-        String area = selectByKey(SysparamsKey.COMPANY_AREA).getKeyValue();
-        String marketValue = selectByKey(SysparamsKey.COMPANY_MARKET_VALUE).getKeyValue();
+        List<String> lists = new LinkedList<>();
+        lists.add(SysparamsKey.INDEX_BANNER_TITLE);
+        lists.add(SysparamsKey.INDEX_BANNER_DESCRIBE);
+        lists.add(SysparamsKey.INDEX_COMPANY_ABOUT);
+        lists.add(SysparamsKey.COMPANY_PHONE);
+        lists.add(SysparamsKey.COMPANY_EMAIL);
+        lists.add(SysparamsKey.COMPANY_ADDRESS);
+        lists.add(SysparamsKey.COMPANY_SINCE);
+        lists.add(SysparamsKey.COMPANY_AREA);
+        lists.add(SysparamsKey.COMPANY_MARKET_VALUE);
+        try {
+            return getAboutSysparam(lists);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public JSONObject getAboutSysparam() {
+        List<String> lists = new LinkedList<>();
+        lists.add(SysparamsKey.ABOUT_TITLE_1);
+        lists.add(SysparamsKey.ABOUT_TITLE_2);
+        lists.add(SysparamsKey.ABOUT_TITLE_3);
+        lists.add(SysparamsKey.ABOUT_TITLE_4);
+        lists.add(SysparamsKey.ABOUT_TITLE_5);
+        lists.add(SysparamsKey.ABOUT_TITLE_6);
+        lists.add(SysparamsKey.ABOUT_CEO_CONTENT);
+        lists.add(SysparamsKey.ABOUT_ENTERPRISE_INFO);
+        try {
+            return getAboutSysparam(lists);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public JSONObject getAboutSysparam(List<String> list) throws Exception {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("bannerTitle", bannerTitle);
-        jsonObject.put("bannerDescribe", bannerDescribe);
-        jsonObject.put("companyAbout", companyAbout);
-        jsonObject.put("phone", phone);
-        jsonObject.put("email", email);
-        jsonObject.put("address", address);
-        jsonObject.put("since", since);
-        jsonObject.put("marketValue", marketValue);
-        jsonObject.put("area", area);
+        for(String keys : list){
+            String value = selectByKey(keys).getKeyValue();
+            jsonObject.put(keys, value);
+        }
         return jsonObject;
     }
 }

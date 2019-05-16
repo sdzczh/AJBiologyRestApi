@@ -88,11 +88,23 @@ public interface SysparamService {
      * @param key
      * @return
      */
-    Sysparam selectByKey(String key);
+    Sysparam selectByKey(String key) throws Exception;
 
     /**
      * 首页获取value
      * @return
      */
     JSONObject getIndexSysparam();
+    /**
+     * 关于页获取value
+     * @return
+     */
+    JSONObject getAboutSysparam();
+
+    /**
+     * 传入Keys列表查询
+     * @param keys
+     *@return
+     */
+    JSONObject getAboutSysparam(List<String> keys) throws Exception;
 }

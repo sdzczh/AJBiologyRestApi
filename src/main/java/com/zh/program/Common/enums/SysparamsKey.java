@@ -26,6 +26,19 @@ public class SysparamsKey {
     //尾部 地址
     public static final String COMPANY_ADDRESS = "company_address";
 
+    //关于页 title
+    public static final String ABOUT_TITLE_1 = "about_title_1";
+    public static final String ABOUT_TITLE_2 = "about_title_2";
+    public static final String ABOUT_TITLE_3 = "about_title_3";
+    public static final String ABOUT_TITLE_4 = "about_title_4";
+    public static final String ABOUT_TITLE_5 = "about_title_5";
+    public static final String ABOUT_TITLE_6 = "about_title_6";
+
+    //关于页 ceo致辞
+    public static final String ABOUT_CEO_CONTENT = "about_ceo_content";
+    //关于页 企业介绍
+    public static final String ABOUT_ENTERPRISE_INFO = "about_enterprise_info";
+
 
 
 }
